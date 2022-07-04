@@ -1,0 +1,86 @@
+html {
+    height: 100%;
+}
+ 
+body {
+    height: 100%;
+    margin: 0;
+}
+.signin-page, .signup-page {
+  width: 100%;
+}
+
+.image {
+  width: 50%;
+}
+.signin, .signup{
+  width: 50%;
+}
+.signin .container{
+  width: 50%;
+  margin-top: 25%;
+}
+
+.signup .container {
+  width: 50%;
+  margin-top: 10%;
+}
+
+.signin .label-a a{
+  color: #178e91!important;
+  float: right;
+}
+
+.create-user a{
+  color: #178e91!important;
+  text-align: center;
+}
+
+.create-user{
+  text-align: center;
+}
+
+h1,
+label {
+  color: #178e91;
+}
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  width: 100%;
+  resize: vertical;
+  padding: 15px;
+  border-radius: 15px;
+  border: 0;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  opacity: 0.9;
+}
+button:hover {
+  opacity: 1;
+}
+.signupbtn,
+.signinbtn {
+  float: left;
+  width: 100%;
+  border-radius: 15px;
+  border: 0;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.signupbtn {
+  margin-bottom: 10px;
+}
+
+.signinbtn {
+  background-color: brown;
+}
