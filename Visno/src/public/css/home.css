@@ -35,3 +35,181 @@ header ul li a{
 .row{
     display: flex;
 }
+
+.notification h2{
+    text-align: center;
+}
+.showtimes{
+    border-right: 2px solid;
+}
+.showtimes .nav-tabs .nav-link.active{
+    border-color: white; 
+}
+.showtimes .nav-tabs .nav-link:hover{
+    border-color: white;
+}
+.showtimes .nav-tabs .nav-link.active::after{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    background: linear-gradient(to right,#fbbd61,#ec7532);
+    bottom: -1px;
+    left: 0;
+}
+.showtimes .nav-tabs .nav-item .nav-link.active{
+    color: #ec7532!important;
+}
+
+.showtimes .nav-tabs .nav-link::after{
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0px;
+    height: 3px;
+    background: linear-gradient(to right,#fbbd61,#ec7532);
+    bottom: -1px;
+    left: 0px;
+    transition: all 0.5s;
+}
+.row{
+    padding: 45px 0;
+}
+.showtimes .nav-tabs .nav-link:hover::after {
+   width: 100%;
+}
+.showtimes .nav-link{
+    font-size: 20px;
+    color: grey;   
+    position: relative;
+    padding: 10px 30px;
+} 
+.showtimes-span{
+    color: #ec7532;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+.showtime-h3{
+    letter-spacing: 1px;
+}
+.showtimes p{
+    font-size: 16px;
+    margin: 0 0 20px;
+}
+.showtime-button a{
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #ec7532;
+    text-decoration: none;
+    transition: all 0.5s;
+}
+.showtime-button .showtimes-arrow{
+    color: #ec7532;
+    transition: all 0.5s;
+    font-size: 12px;
+}
+.showtime-button:hover .showtimes-arrow{
+    color: black;
+}
+.showtime-button:hover a{
+    color: black;
+}
+.row-tag .viewtimes{
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: #4a4a4a;
+}
+.row-tag .time{
+    font-size: 14px;
+    display: inline-block;
+    margin-left: 5px;
+    padding: 7px 10px;
+    letter-spacing: 2px;
+    color: #717171;
+    border-radius: 5px;
+    background-color: #d8d8d8;
+}
+.row-tag .time-1{
+    opacity: 0.5;
+}
+.row-tag .row-span span{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    line-height: 35px;
+    text-align: center;
+}
+.row-tag .row-span{
+    font-size: 12px;
+    letter-spacing: 1.5px;
+}
+.row .col-2 img{
+    border-radius: 10px;
+}
+.images-fluid{
+    width: 100%;
+}
+
+.btn-confirm , .btn-unconfirm{
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    color: #f2f2f2;
+    font-weight: 600;
+    border: 0;
+}
+.btn-confirm{
+    background-color: rgb(98, 170, 98);
+}
+.btn-unconfirm{
+    background-color: brown;
+}
+.row{
+    margin-right: 0px!important;
+    margin-left: 0px!important;
+}
+
+
+/* Drawchart */
+.statistic {
+    font-weight: 600;
+}
+.statistic .year span{
+    background-color: #c4c4c4;
+    padding: 10px;
+}
+
+#bar-chart, #bar-chart1 {
+    width: 700px;
+    height: 300px;
+    position: relative;
+  }
+
+#bar-chart::before, #bar-chart1::before{
+    content: "";
+    position: absolute;
+    display: block;
+    width: 240px;
+    height: 30px;
+  }
+.chart{
+    border-bottom: 2px solid;
+}
+
+
+/* Total due  */
+.total-due, .total-dued{
+    text-align: center;
+}
+
+.total-due p, .total-dued p{
+    font-weight: 600;
+    font-size: 25px;
+}
+
+.total-due span, .total-dued span{
+    font-weight: 700;
+    font-size: 30px;
+}
