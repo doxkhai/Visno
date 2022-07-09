@@ -22,9 +22,11 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 </head>
 <body>
+    {{#unless noheader}}
     <header class="header">
         {{> header}}
     </header>
+    {{/unless}}
 
     {{{body}}}
 
