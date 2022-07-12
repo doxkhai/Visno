@@ -1,6 +1,10 @@
 const express = require("express")
 const morgan = require("morgan")
+const cors = require("cors")
+const cookieParser = require('cookie-parser')
 const handlebars = require('express-handlebars')
+const session = require('express-session');
+const bodyParser = require('body-parser')
 const path = require('path')
 const app = express()
 const route = require('./routes')
@@ -9,9 +13,29 @@ const dotenv = require("dotenv")
 dotenv.config()
 const port = process.env.PORT
 
+
+//* Set up session
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(
+    session({
+        secret: 'cat',
+        resave: true,
+        saveUninitialized: false,
+    })
+);
+app.use(function(req,res,next) {
+    res.locals.session = req.session;
+    next();
+});
+
+app.use(cors())
+app.use(cookieParser())
+
+
 //* Connect db
 const db = require('./config/db')
-db.connect()
+db.connect(process.env.MONGODB_URL)
 
 //* Set static files
 app.use(express.static(path.join(__dirname, 'public')))
