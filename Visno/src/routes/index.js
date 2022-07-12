@@ -1,13 +1,14 @@
-const homeRouter = require('./home')
+const authRouter = require('./auth')
 const userRouter = require('./user')
 const expenseRouter = require('./expense')
-const setUser = require('../app/controllers/MiddlewareController').setUser
+const middlewareController = require('../app/controllers/MiddlewareController')
 
 function route(app){
-    app.use(setUser)
+    app.use(middlewareController.setUser)
+    app.use('/auth', authRouter)
+    app.use(middlewareController.requireLogin)
     app.use('/expenses', expenseRouter)
-    app.use('/user', userRouter)
-    app.use('/', homeRouter)
+    app.use('/', userRouter)
 
 }
 

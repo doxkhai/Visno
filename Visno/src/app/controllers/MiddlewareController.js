@@ -11,7 +11,7 @@ class MiddlewareController {
             jwt.verify(accessToken, process.env.JWT_ACCESS_KEY, (err, user) => {
                 if(err) 
                     return res.redirect(url.format({
-                        pathname: '/login',
+                        pathname: '/auth/login',
                         query: {
                             'message': "Invalid token",
                             'alert' : 'danger'
@@ -24,7 +24,7 @@ class MiddlewareController {
         }
         else{
             return res.redirect(url.format({
-                pathname: '/login',
+                pathname: '/auth/login',
                 query: {
                     'message': "You're not authenticated ",
                     'alert' : 'danger'
@@ -46,6 +46,20 @@ class MiddlewareController {
             })
             .catch(next)
         // res.send('HELLO')
+    }
+
+    requireLogin(req,res,next){
+        if(req.user)
+            return next()
+    
+        res.redirect(url.format({
+                pathname: '/auth/login',
+                query: {
+                    message: 'You have to login first',
+                    alert: 'warning'
+                }
+            }))
+
     }
 
 }

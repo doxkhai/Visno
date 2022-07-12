@@ -3,14 +3,10 @@ const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken")
 const User = require('../models/User')
 
-class HomeController {
+class AuthController {
 
-    //* [GET] /
-    index (req, res, next) {
-        res.render('Site/home', {user : req.user})
-    }
 
-    //* [GET] /login
+    //* [GET] /auth/login
     login (req,res,next) {
         let o = req.query ? {
             message: req.query.message,
@@ -20,12 +16,12 @@ class HomeController {
         res.render('Site/signin', o)
     }
 
-    //* [POST] /login
+    //* [POST] /auth/login
     signin (req, res, next){
         User.findOne({email: req.body.email})
             .then((user) => {
                 const failUrl = url.format({
-                        pathname: '/login',
+                        pathname: '/auth/login',
                         query: {
                             'message': 'Wrong email or password',
                             'alert':'danger'
@@ -46,7 +42,7 @@ class HomeController {
                               id: user._id,   
                           },
                           process.env.JWT_ACCESS_KEY,
-                          { expiresIn: "30s" }
+                          { expiresIn: "2h" }
                           )
                           req.headers.token = 'Bearer ' + accessToken
 
@@ -57,7 +53,7 @@ class HomeController {
             .catch(next)
     }
 
-    //* [GET] /signup
+    //* [GET] /auth/signup
     signup (req,res,next) {
         let o = req.query ? {
             message: req.query.message,
@@ -67,7 +63,7 @@ class HomeController {
         res.render('Site/signup', o)
     }
 
-    //* [POST] /signup
+    //* [POST] /auth/signup
     register(req,res,next) {
         // res.send('REGISTER')
 
@@ -75,7 +71,7 @@ class HomeController {
             .then((user) => {
                 if(user) 
                     return res.redirect(url.format({
-                        pathname: '/signup',
+                        pathname: '/auth/signup',
                         query:{
                             "message": "Email existed",
                             "alert": "danger"
@@ -84,7 +80,7 @@ class HomeController {
                 
                 if(req.body.password != req.body.passwordrepeat) 
                     return res.redirect(url.format({
-                        pathname: '/signup',
+                        pathname: '/auth/signup',
                         query:{
                             "message": "Passwords aren't matching",
                             "alert": "danger"
@@ -101,7 +97,7 @@ class HomeController {
 
                           user.save()
                               .then(() => {res.redirect(url.format({
-                                  pathname: '/login',
+                                  pathname: '/auth/login',
                                   query: {
                                       "message": "Account created successfully",
                                       "alert": "success",
@@ -114,6 +110,17 @@ class HomeController {
             })
             .catch(next)
     }
+
+    //* [GET] /auth/logout
+    logout(req, res, next) {
+        req.session.destroy((err) => {
+            if(err) {
+                return next(err)
+            }
+
+            return res.redirect('/auth/login')
+        })
+    }
 }
 
-module.exports = new HomeController();
+module.exports = new AuthController();

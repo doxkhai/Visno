@@ -2,13 +2,18 @@ const User = require('../models/User')
 
 class UserController {
     
-    //*[GET] /user/
-    index(req, res, next) {
+    //* [GET] /
+    index (req, res, next) {
+        res.render('Site/home', {user : req.user})
+    }
+
+    //*[GET] /userinfo
+    info(req, res, next) {
         
         res.render('User/userinfo')
     }
 
-    //* [GET] /user/friends
+    //* [GET] /friends
     friend(req,res,next) {
         res.render('User/friendlist')
     }
