@@ -5,7 +5,7 @@ const User = require('../models/User')
 class MiddlewareController {
 
     verifyToken (req, res, next) {
-        const token = req.headers.token
+        const token = req.cookies.token
         if(token){
             const accessToken = token.split(" ")[1]
             jwt.verify(accessToken, process.env.JWT_ACCESS_KEY, (err, user) => {
@@ -18,8 +18,7 @@ class MiddlewareController {
                         }
                     })) ;
 
-                req.session.userid = user.id
-                return res.redirect('/')
+                next()
             })
         }
         else{
@@ -42,16 +41,17 @@ class MiddlewareController {
                 if(!user) return res.send(req.session.userid)
                 req.user = user.toObject();
                 req.user.password = ''
-                next();
+                next()
             })
-            .catch(next)
-        // res.send('HELLO')
+            .catch((err) => {
+                console.log('User not exist\n ' + err)
+            })
     }
 
     requireLogin(req,res,next){
         if(req.user)
             return next()
-    
+        console.log("this is req.user: " + req.user)
         res.redirect(url.format({
                 pathname: '/auth/login',
                 query: {
@@ -61,7 +61,6 @@ class MiddlewareController {
             }))
 
     }
-
 }
 
 module.exports = new MiddlewareController()

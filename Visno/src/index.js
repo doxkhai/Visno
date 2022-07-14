@@ -14,6 +14,9 @@ dotenv.config()
 const port = process.env.PORT
 
 
+//* Set static files
+app.use(express.static(path.join(__dirname, 'public')))
+
 //* Set up session
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -37,8 +40,6 @@ app.use(cookieParser())
 const db = require('./config/db')
 db.connect(process.env.MONGODB_URL)
 
-//* Set static files
-app.use(express.static(path.join(__dirname, 'public')))
 
 //* Middleware for request body-parser
 app.use(express.urlencoded({

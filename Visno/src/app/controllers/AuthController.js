@@ -35,18 +35,25 @@ class AuthController {
                     user.password
                 )
                       .then((validPsw) => {
-                          if(!validPsw) return res.redirect(failUrl)
-                        
-                          //* Successfully login
-                          const accessToken = jwt.sign({
-                              id: user._id,   
-                          },
-                          process.env.JWT_ACCESS_KEY,
-                          { expiresIn: "2h" }
-                          )
-                          req.headers.token = 'Bearer ' + accessToken
+                            if(!validPsw) return res.redirect(failUrl)
+                            
+                            //* Successfully login
+                            req.session.userid = user._id
 
-                          next()
+                            const accessToken = jwt.sign({
+                                id: user._id,   
+                            },
+                            process.env.JWT_ACCESS_KEY,
+                            { expiresIn: "2h" }
+                            )
+                            let token = 'Bearer ' + accessToken
+                            
+                            res.cookie("token", token, {
+                                httpOnly: true,
+                                secure: false,
+                                sameSite: "strict",
+                            })
+                            res.redirect('/')
                       })
                       .catch(next)
             })
@@ -117,7 +124,8 @@ class AuthController {
             if(err) {
                 return next(err)
             }
-
+            
+            res.clearCookie("token")
             return res.redirect('/auth/login')
         })
     }
