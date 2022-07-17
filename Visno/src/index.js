@@ -52,7 +52,7 @@ app.use(express.json())
 //* Set view engine to handlebars
 app.engine('hbs', handlebars.engine({
     extname: '.hbs', // change file types name
-    // helpers: require('./app/helpers/handlebars'),
+    helpers: require('./app/helpers/handlebars'),
 }))
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname, 'resources/views'))

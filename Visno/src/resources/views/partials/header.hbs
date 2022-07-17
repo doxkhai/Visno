@@ -1,34 +1,30 @@
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <a class="navbar-brand" href="/"><img src="/img/sign.jpg"
-                        style="width: 50px;"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#homeNavBar"
-                    aria-controls="homeNavBar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<aside class="sidebar">
+      <div class="toggle">
+        <a href="#" class="burger js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
+              <span></span>
+            </a>
+      </div>
+      <div class="side-inner">
 
-                <div class="collapse navbar-collapse" id="homeNavBar">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/">HOME</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/expenses">CHI TIEU</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">NO</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/friends">BAN BE</a>
-                        </li>
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
-                        <i class="fas fa-bell"></i>
-                        <p>{{{user.name}}}</p>
-                        <a class="navbar-brand" href="/userinfo"><img src="/img/sign.jpg" style="width: 35px; border-radius: 50%;"></a>
-                    </form>
-                </div>
-            </nav>
-
+        <div class="profile">
+          <img src="/img/sign.jpg" alt="Image" class="img-fluid">
+          <h3 class="name">{{{user.name}}}</h3>
+          {{#if user.pNumber}}
+          <span class="country">{{{user.pNumber}}}</span>
+          {{/if}}
         </div>
+
+        <div class="nav-menu">
+          <ul>
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="/userinfo">My Profile</a></li>
+            <li><a href="/expenses">Expensives</a></li>
+            <li><a href="#">Due</a></li>
+            <li>
+              <a href="/friends">Friends</a>
+            </li>
+            <li><a href="/auth/logout">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>

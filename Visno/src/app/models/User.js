@@ -6,15 +6,17 @@ const User = new Schema({
     password : {type:String, required: true},
     email : {type: String, required: true, unique: true},
     image: {type: String},
-    pNumber : {type: Number},
+    pNumber : {type: String, minLength: 8},
     dob : {type: Date},
+    address: {type: String},
     category: [
         {type: String}
     ],
     friendlist: [
         {type: String}
     ],
-    createdAt: {type: Date, default: Date.now()},
-})
+},
+{timestamps: true}
+)
 
 module.exports = mongoose.model('User', User)

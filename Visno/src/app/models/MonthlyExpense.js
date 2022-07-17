@@ -9,6 +9,6 @@ const MoExpense = new Schema({
         type: Map,
         of: Number
     }
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('moExpense', MoExpense)

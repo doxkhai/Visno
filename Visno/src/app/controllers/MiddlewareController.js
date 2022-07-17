@@ -51,7 +51,7 @@ class MiddlewareController {
     requireLogin(req,res,next){
         if(req.user)
             return next()
-        console.log("this is req.user: " + req.user)
+            
         res.redirect(url.format({
                 pathname: '/auth/login',
                 query: {

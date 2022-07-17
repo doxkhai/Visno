@@ -8,6 +8,6 @@ const Expense = new Schema({
     category: {type: String, required: true},
     description: {type: String},
     date: {type: Date, default: Date.now()},
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('Expense', Expense)
