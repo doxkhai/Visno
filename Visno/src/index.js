@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const handlebars = require('express-handlebars')
 const session = require('express-session');
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 const path = require('path')
 const app = express()
 const route = require('./routes')
@@ -22,18 +23,19 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(
     session({
-        secret: 'cat',
+        secret: process.env.SESSION_KEY,
         resave: true,
         saveUninitialized: false,
     })
 );
-app.use(function(req,res,next) {
+app.use(function (req, res, next) {
     res.locals.session = req.session;
     next();
 });
 
 app.use(cors())
 app.use(cookieParser())
+app.use(methodOverride('_method')); //override using a query value
 
 
 //* Connect db
@@ -43,7 +45,7 @@ db.connect(process.env.MONGODB_URL)
 
 //* Middleware for request body-parser
 app.use(express.urlencoded({
-    extended : true
+    extended: true
 }))
 app.use(express.json())
 
