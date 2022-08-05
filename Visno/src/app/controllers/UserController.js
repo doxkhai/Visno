@@ -96,6 +96,51 @@ class UserController {
             .catch(next)
     }
 
+    //*[POST] /category/add
+    // ["food","drink", "gas", "other"]
+    addCategory(req, res, next) {
+        let arr = JSON.parse(req.body.arr)
+
+        //TODO: add userID to find query
+        User.findById('62d27053ce114a13ea774103')
+            .then((user) => {
+                for (const cat of arr) {
+                    user.category.push({ value: cat })
+                }
+                user.save()
+                    .then((user) => {
+                        res.json(user)
+                    })
+                    .catch(next)
+            })
+            .catch(next)
+
+    }
+
+    //*[PUT] /category/edit/:id?_method=PUT
+    // {
+    //     value: "foo"
+    // }
+    editCategory(req, res, next) {
+
+        //TODO: add userID to find query
+        User.findById('62d27053ce114a13ea774103')
+            .then((user) => {
+                for (const cat of user.category) {
+                    if (cat["_id"] == req.params.id) {
+                        cat["value"] = req.body.value
+                        break
+                    }
+                }
+                user.save()
+                    .then(user => {
+                        res.json(user)
+                    })
+                    .catch(next)
+            })
+            .catch(next)
+    }
+
 }
 
 module.exports = new UserController()

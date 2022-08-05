@@ -10,13 +10,42 @@ const User = new Schema({
     dob: { type: Date },
     address: { type: String },
     category: [
-        { type: String }
+        {
+            _id: { type: Schema.Types.ObjectId, required: true, auto: true },
+            value: { type: String, required: true }
+        }
     ],
-    friendlist: [
-        { type: String }
-    ],
+    friendlist: {
+        type: [String],
+    },
 },
     { timestamps: true }
 )
 
+User.statics.getCategory = async function (id) {
+    let res = []
+    await this.findById(id)
+        .then((user) => {
+            res = user.category
+        })
+        .catch(err => { throw new Error(err) })
+    return res
+}
+
 module.exports = mongoose.model('User', User)
+
+// user: {
+//     category [
+//         {
+//             id: 123
+//             value: 'fo'
+//         }
+//     ]
+// }
+
+// expense : [
+//     {
+//         name: 'an sang'
+//         category: 'fo'
+//     }
+// ]

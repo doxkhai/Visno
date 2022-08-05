@@ -24,6 +24,14 @@ module.exports = {
 
     endOfMonth: (year, month) => {
         return moment(new Date(year, month, 1)).utc().endOf('day').toDate()
+    },
+
+    arrayToMap: (arr) => {
+        let obj = {}
+        for(const a of arr) {
+            obj[a["_id"]] = a["value"]
+        }
+        return obj
     }
 
 }

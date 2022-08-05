@@ -1,32 +1,39 @@
 const User = require('../models/User')
 const Expense = require('../models/Expense')
-// const moExpense = require('../models/MonthlyExpense')
 const moment = require('moment')
 const subfunc = require('../../util/subfunction')
 const MonthlyExpense = require('../models/MonthlyExpense')
 
 class ExpenseController {
 
-    //[GET] /expenses/?month=1&year=1
-    index(req, res, next) {
+    //*[GET] /expenses/?month=1&year=1
+    async index(req, res, next) {
+
         // res.render('Expenses/expense')
         let year = req.query.year ? req.query.year : moment().year()
         let month = req.query.month ? req.query.month : moment().month() + 1
 
-        //TODO: add user ID in to find query
-        //TODO: add sort 
-        Expense.find({
-            date: {
-                $gte: subfunc.startOfMonth(year, month),
-                $lte: subfunc.endOfMonth(year, month)
-            },
-            // userID: req.user._id
-        })
-            .then(expenses => {
-                let obj = subfunc.multiMongooseToObj(expenses)
-                res.json(obj)
-            })
-            .catch(next)
+        //TODO: add user ID in to find query - done
+        //TODO: add sort - done
+
+        let exps = await Expense.getExpense(year, month, '62d27053ce114a13ea774103')
+
+        res.json(exps)
+
+    }
+
+    //*[GET] /expenses/trash?month=1&year=1
+    async trash(req, res, next) {
+
+        // res.render('Expenses/expense')
+        let year = req.query.year ? req.query.year : moment().year()
+        let month = req.query.month ? req.query.month : moment().month() + 1
+
+        //TODO: add user ID in to find query - done
+        //TODO: add sort - done
+        let exps = await Expense.getExpense(year, month, '62d27053ce114a13ea774103', true)
+
+        res.json(exps)
     }
 
     // [{   
@@ -39,7 +46,7 @@ class ExpenseController {
     //     ...
     // }]
 
-    //[POST] /expenses/store
+    //*[POST] /expenses/store
     storeExpenses(req, res, next) {
         var obj = JSON.parse(req.body.arr);
 
@@ -57,7 +64,7 @@ class ExpenseController {
     }
 
 
-    //softdelete, forcedelete, restore
+    //*[POST] /expenses/mani
     // {
     //     action: delete || force || restore,
     //     arr : '["id1","id2",...]'
@@ -97,29 +104,21 @@ class ExpenseController {
         }
     }
 
-    //[GET] /expenses/stat/?month=1&year=2
-    monthlyExpenses(req, res, next) {
+    //*[GET] /expenses/stat/?month=1&year=2
+    async monthlyExpenses(req, res, next) {
 
         let year = req.query.year ? req.query.year : moment().year()
         let month = req.query.month ? req.query.month : moment().month() + 1
 
         //todo: add userID in to find query
-        Expense.find({
-            date: {
-                $gte: subfunc.startOfMonth(year, month),
-                $lte: subfunc.endOfMonth(year, month)
-            },
-            // userID: req.user._id
-        })
-            .then(expenses => {
-                const mEx = new MonthlyExpense(subfunc.multiMongooseToObj(expenses))
+        let exps = await Expense.getExpense(year, month, '62d27053ce114a13ea774103')
 
-                res.json(mEx)
-            })
-            .catch(next)
+        let mEx = new MonthlyExpense(exps)
+
+        res.json(mEx)
     }
 
-    //[PUT] /expenses/edit/:id?_method=PUT
+    //*[PUT] /expenses/edit/:id?_method=PUT
     // {
     //     exName : "value",
     //     total: "value",
@@ -130,8 +129,11 @@ class ExpenseController {
 
     editExpense(req, res, next) {
         let update = req.body
-        // update.userID = req.user._id
-        Expense.findByIdAndUpdate(req.params.id, update, { new: true })
+
+        Expense.findOneAndUpdate({
+            _id: req.params.id,
+            // userID: req.user._id
+        }, update, { new: true })
             .then((e) => { res.json(e) })
             .catch(next)
     }
@@ -149,35 +151,26 @@ class ExpenseController {
         }
 
         for (let month = 1; month < 13; month++) {
-            await Expense.find({
-                date: {
-                    $gte: subfunc.startOfMonth(year, month),
-                    $lte: subfunc.endOfMonth(year, month)
-                },
-                // userID: req.user._id
-            })
-                .then(expenses => {
-                    if (expenses.length === 0) return
 
-                    let mEx = new MonthlyExpense(subfunc.multiMongooseToObj(expenses))
+            let expenses = await Expense.getExpense(year, month,'62d27053ce114a13ea774103')
 
-                    obj["total"] += mEx.total
-                    for (const category in mEx.totalEach) {
-                        let each = obj["totalEach"][category]
-                        if (!each)
-                            obj["totalEach"][category] = 0
-                        obj["totalEach"][category] += mEx["totalEach"][category]
-                    }
+            if (expenses.length === 0) continue
 
-                    obj["data"].push(mEx)
+            let mEx = new MonthlyExpense(expenses)
 
-                })
-                .catch(next)
+            obj["total"] += mEx.total
+            for (const category in mEx.totalEach) {
+                let each = obj["totalEach"][category]
+                if (!each)
+                    obj["totalEach"][category] = 0
+                obj["totalEach"][category] += mEx["totalEach"][category]
+            }
+
+            obj["data"].push(mEx)
         }
 
         res.json(obj)
     }
-
 
 
 

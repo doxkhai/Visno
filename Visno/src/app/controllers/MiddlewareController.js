@@ -60,6 +60,19 @@ class MiddlewareController {
             }
         }))
     }
+
+    badRequest(req, res) {
+        console.error('Cannot ' + req.method + ' ' + req.protocol + '://' + req.get('host') + req.originalUrl)
+        throw new Error("Bad request")
+    }
+
+    errorHandler(err, req, res, next) {
+        if(err.message === "Bad request")
+            return res.status(404).send("404 Deo tim thay ?")
+
+        res.status(500).send("Sumting wonggg")
+        console.error(err.stack)
+    }
 }
 
 module.exports = new MiddlewareController()
